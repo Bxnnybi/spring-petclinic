@@ -5,7 +5,7 @@ services:
     image: liatrio/jenkins-alpine
     container_name: my_jenkins
     ports:
-      - "8080:8080"  # Expose Jenkins on port 8080
+      - "8081:8080"  # Expose Jenkins on port 8080
       - "50000:50000"  # Jenkins agent port
     volumes:
       - /jenkins_home:/var/jenkins_home  # Host directory for Jenkins data
