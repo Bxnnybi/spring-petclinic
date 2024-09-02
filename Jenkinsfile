@@ -1,33 +1,16 @@
-pipeline {
-    agent any
+version: '3.8'
 
-    stages {
-        stage('Clone Repository') {
-            steps {
-                git 'https://github.com/Bxnnybi/spring-petclinic.git'
-            }
-        }
+services:
+  jenkins:
+    image: liatrio/jenkins-alpine
+    container_name: my_jenkins
+    ports:
+      - "8080:8080"  # Expose Jenkins on port 8080
+      - "50000:50000"  # Jenkins agent port
+    volumes:
+      - /jenkins_home:/var/jenkins_home  # Host directory for Jenkins data
+      - /var/run/docker.sock:/var/run/docker.sock  
 
-        stage('Build Docker Image') {
-            steps {
-                script {
-                    docker.build('spring-petclinic:latest')
-                }
-            }
-        }
-
-        stage('Run Docker Container') {
-            steps {
-                script {
-                    docker.image('spring-petclinic:latest').run('-d -p 8080:8080')
-                }
-            }
-        }
-
-        stage('Post-Build Actions') {
-            steps {
-                echo 'Deployment successful!'
-            }
-        }
-    }
-}
+volumes:
+  jenkins_home:
+    driver: local
